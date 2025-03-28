@@ -1,0 +1,174 @@
+<div class="anf-dashboard-container">
+  <div class="dashboard-header">
+    <h1>Community Analytics Dashboard</h1>
+    <div class="dashboard-controls">
+      <div class="timeframe-selector">
+        <button
+          {{action "switchTimeframe" "day"}}
+          class="btn btn-default"
+        >Today</button>
+        <button
+          {{action "switchTimeframe" "week"}}
+          class="btn btn-default active"
+        >This Week</button>
+        <button
+          {{action "switchTimeframe" "month"}}
+          class="btn btn-default"
+        >This Month</button>
+        <button {{action "switchTimeframe" "year"}} class="btn btn-default">This
+          Year</button>
+      </div>
+      <button {{action "refreshModel"}} class="btn btn-refresh">
+        <span class="d-icon d-icon-sync"></span>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <div class="dashboard-stats-cards">
+    <div class="stat-card">
+      <div class="stat-icon users-icon">
+        <span class="d-icon d-icon-users"></span>
+      </div>
+      <div class="stat-content">
+        <h3>Users</h3>
+        <div class="stat-value">{{this.model.stats.users.total}}</div>
+        <div class="stat-details">
+          <span class="active-count">{{this.model.stats.users.active}}
+            active</span>
+          <span class="growth positive">
+            ↑
+            {{this.model.stats.users.growth}}%
+          </span>
+        </div>
+        <div class="stat-subtitle">{{this.model.stats.users.new_this_month}}
+          new this month</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon topics-icon">
+        <span class="d-icon d-icon-comment"></span>
+      </div>
+      <div class="stat-content">
+        <h3>Topics</h3>
+        <div class="stat-value">{{this.model.stats.topics.total}}</div>
+        <div class="stat-details">
+          <span
+            class="growth
+              {{if
+                (gt this.model.stats.topics.growth 0)
+                'positive'
+                'negative'
+              }}"
+          >
+            {{#if (gt this.model.stats.topics.growth 0)}}↑{{else}}↓{{/if}}
+            {{this.model.stats.topics.growth}}%
+          </span>
+        </div>
+        <div
+          class="stat-subtitle"
+        >{{this.model.stats.topics.created_this_month}} created this month</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon posts-icon">
+        <span class="d-icon d-icon-far-clipboard"></span>
+      </div>
+      <div class="stat-content">
+        <h3>Posts</h3>
+        <div class="stat-value">{{this.model.stats.posts.total}}</div>
+        <div class="stat-details">
+          <span
+            class="growth
+              {{if (gt this.model.stats.posts.growth 0) 'positive' 'negative'}}"
+          >
+            {{#if (gt this.model.stats.posts.growth 0)}}↑{{else}}↓{{/if}}
+            {{this.model.stats.posts.growth}}%
+          </span>
+        </div>
+        <div class="stat-subtitle">{{this.model.stats.posts.this_month}}
+          this month</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon engagement-icon">
+        <span class="d-icon d-icon-chart-bar"></span>
+      </div>
+      <div class="stat-content">
+        <h3>Engagement</h3>
+        <div class="stat-value">{{this.model.stats.engagement.dau}}
+          /
+          {{this.model.stats.engagement.mau}}</div>
+        <div class="stat-details">
+          <span class="rate">DAU/MAU:
+            {{this.model.stats.engagement.retention}}</span>
+          <span
+            class="growth
+              {{if
+                (gt this.model.stats.engagement.growth 0)
+                'positive'
+                'negative'
+              }}"
+          >
+            {{#if (gt this.model.stats.engagement.growth 0)}}↑{{else}}↓{{/if}}
+            {{this.model.stats.engagement.growth}}%
+          </span>
+        </div>
+        <div class="stat-subtitle">Retention:
+          {{this.model.stats.engagement.retention}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-charts-section">
+    <div class="chart-row">
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3>User Growth Trend</h3>
+        </div>
+        {{user-growth-chart data=this.model.trends.user_growth}}
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-projects-section">
+    <div class="section-header">
+      <h2>Featured Projects</h2>
+    </div>
+    <div class="projects-grid">
+      {{#each this.model.recentProjects as |project|}}
+        <div class="project-card">
+          <h3 class="project-name">{{project.name}}</h3>
+          <p class="project-description">{{project.description}}</p>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="dashboard-activity-section">
+    <div class="section-header">
+      <h2>Recent Activity</h2>
+      <button class="btn btn-text">View All Activity</button>
+    </div>
+    <div class="activity-list">
+      {{#each this.model.activities as |activity|}}
+        <div class="activity-item">
+          <div class="activity-avatar">
+            <img src="{{activity.avatar}}" alt="{{activity.user}}" />
+          </div>
+          <div class="activity-content">
+            <div class="activity-header">
+              <span class="activity-user">{{activity.user}}</span>
+              <span class="activity-action">{{activity.action}}</span>
+              <span class="activity-object">{{activity.content}}</span>
+            </div>
+            <div class="activity-time">{{activity.time}}</div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
